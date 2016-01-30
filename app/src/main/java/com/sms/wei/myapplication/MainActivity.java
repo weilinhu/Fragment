@@ -20,7 +20,10 @@ public class MainActivity extends Activity {
         }
         if (firstFragment==null){
             firstFragment=FirstFragment.newInstance("我是第一个","Fragment");
-            getFragmentManager().beginTransaction().add(R.id.fl_content,firstFragment,FirstFragment.TAG).commit();
+            getFragmentManager().beginTransaction()
+                    .add(R.id.fl_content,firstFragment,FirstFragment.TAG)
+                    //添加到回退栈
+                    .addToBackStack(null).commit();
         }
 
 
