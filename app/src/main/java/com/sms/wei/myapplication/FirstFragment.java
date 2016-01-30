@@ -1,7 +1,11 @@
 package com.sms.wei.myapplication;
 
+import android.app.*;
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 import android.widget.TextView;
 
 /**
@@ -11,13 +15,23 @@ public class FirstFragment extends  BaseFragment {
     //唯一 Tag
     public  static final  String TAG = FirstFragment.class.getSimpleName();
     private FirstFragmetnListerner listerner;
-
+    TextView tv;
     @Override
     protected void afterCreateView() {
-        TextView tv= (TextView) mRootView.findViewById(R.id.tv);
+         tv= (TextView) mRootView.findViewById(R.id.tv);
         Bundle bundle = getArguments();
 
         tv.setText(bundle.getString("arg1")+bundle.getString("arg2"));
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                com.sms.wei.myapplication.Dialog dialog = new com.sms.wei.myapplication.Dialog();
+                dialog.setTargetFragment(FirstFragment.this,1);
+                dialog.show(getFragmentManager(),"dialog");
+
+            }
+        });
     }
 
     @Override
@@ -40,6 +54,7 @@ public class FirstFragment extends  BaseFragment {
           initEvent();
 
 
+
     }
 
     private void initEvent() {
@@ -47,7 +62,7 @@ public class FirstFragment extends  BaseFragment {
         if (listerner!=null){
             listerner.onEvent();
         }
-        //or
+        //判断绑定的Activity是否实现了此接口
         if (getActivity() instanceof FirstFragmetnListerner){
             ((FirstFragmetnListerner) getActivity()).onEvent();
         }
@@ -70,5 +85,13 @@ public class FirstFragment extends  BaseFragment {
     //通过方法设置接口
     public void setFirstFragementListerer(FirstFragmetnListerner listener){
             this.listerner = listener;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+     if (requestCode==1){
+         tv.setText(data.getStringExtra("123"));
+     }
     }
 }
