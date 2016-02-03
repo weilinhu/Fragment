@@ -148,6 +148,8 @@ Activity 中的 onSaveInstanceState() 里面有一句super.onSaveInstanceState(o
                 
 ##Fragment与Activity通信的最佳实践
 - 通过
+
+
       //返回数据
      getActivity().setResult(ListTitleFragment.REQUEST_DETAIL, intent); 
      //接收数据调用onActivityResult();
