@@ -114,6 +114,7 @@ Activity 中的 onSaveInstanceState() 里面有一句super.onSaveInstanceState(o
      fragment = Fragment.newInstance(...);
      }
 ## Fragment里监听虚拟按键和实体按键的返回事件
+
       mRootView.setFocusable(true);
      mRootView.setFocusableInTouchMode(true);
     mRootView.setOnKeyListener(new View.OnKeyListener() {
@@ -145,12 +146,18 @@ Activity 中的 onSaveInstanceState() 里面有一句super.onSaveInstanceState(o
         getTargetFragment().onActivityResult(ContentFragment.REQUEST_EVALUATE,  
                 Activity.RESULT_OK, intent);  
                 
-####Fragment间的数据传递
-
-    //返回数据
+##Fragment与Activity通信的最佳实践
+- 通过
+      //返回数据
      getActivity().setResult(ListTitleFragment.REQUEST_DETAIL, intent); 
      //接收数据调用onActivityResult();
+- 通过instanceof 多态实现或者暴露接口
 
+
+      if (getActivity() instanceof FOneBtnClickListener)  
+         {  
+             ((FOneBtnClickListener) getActivity()).onFOneBtnClick();  
+        }  
 
 ## 判断一个页面该使用Fragment还是Activity
 
