@@ -130,7 +130,27 @@ Activity 中的 onSaveInstanceState() 里面有一句super.onSaveInstanceState(o
 
 ## 使用最大化的DialogFragment来实现浮动层级视图
 
-使用最大化的DialogFragment来显示详情页，此时并不需要提供一个具体的ContainerId即可显示，因为详情页一般情况下在Phone上都是占据满屏幕的，用DialogFragment即可。
+使用最大化的DialogFragment来显示详情页，此时并不需要提供一个具体的ContainerId即可显示，只需要FragementManager，因为详情页一般情况下在Phone上都是占据满屏幕的，用DialogFragment即可。<br/>
+
+     EvaluateDialog dialog = new EvaluateDialog();  
+                //注意setTargetFragment  
+                dialog.setTargetFragment(ContentFragment.this, REQUEST_EVALUATE);  
+                dialog.show(getFragmentManager(), EVALUATE_DIALOG);
+                 // 判断是否设置了targetFragment  
+        if (getTargetFragment() == null)  
+            return;  
+     
+        Intent intent = new Intent();  
+        intent.putExtra(RESPONSE_EVALUATE, mEvaluteVals[which]);  
+        getTargetFragment().onActivityResult(ContentFragment.REQUEST_EVALUATE,  
+                Activity.RESULT_OK, intent);  
+                
+####Fragment间的数据传递
+
+    //返回数据
+     getActivity().setResult(ListTitleFragment.REQUEST_DETAIL, intent); 
+     //接收数据调用onActivityResult();
+
 
 ## 判断一个页面该使用Fragment还是Activity
 
@@ -138,7 +158,7 @@ Activity 中的 onSaveInstanceState() 里面有一句super.onSaveInstanceState(o
 * * *
 # 封装好的项目
 <br>
- [FragmentStack](https://github.com/Mr-wangyong/FragmentStack)
+ * [FragmentStack](https://github.com/Mr-wangyong/FragmentStack)
 
 ====
 # 参考资料
