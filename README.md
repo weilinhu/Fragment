@@ -144,6 +144,7 @@ Activity 中的 onSaveInstanceState() 里面有一句super.onSaveInstanceState(o
 # 参考资料
 - [ Android Fragment 真正的完全解析（上）](http://blog.csdn.net/lmj623565791/article/details/37970961)
 - [ Android Fragment 真正的完全解析（下）](http://blog.csdn.net/lmj623565791/article/details/37992017#comments)
+- [从Fragment被销毁看replace和add的区别](http://jcodecraeer.com/a/anzhuokaifa/androidkaifa/2015/0324/2639.html)
 - [Android Fragment完全解析，关于碎片你所需知道的一切](http://blog.csdn.net/guolin_blog/article/details/8881711)
 - [Android Fragment应用实战，使用碎片向ActivityGroup说再见](http://blog.csdn.net/guolin_blog/article/details/13171191)
 - [Android 屏幕旋转 处理 AsyncTask 和 ProgressDialog 的最佳方案](http://blog.csdn.net/lmj623565791/article/details/37936275)
