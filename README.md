@@ -181,3 +181,4 @@ Activity 中的 onSaveInstanceState() 里面有一句super.onSaveInstanceState(o
 - [ Android Fragment 你应该知道的一切](http://blog.csdn.net/lmj623565791/article/details/42628537#comments)
 - [微信ANDROID客户端-会话速度提升70%的背后](https://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&mid=207548094&idx=1&sn=1a277620bc28349368b68ed98fbefebe&scene=1&srcid=lbTtbXQRHO0soAYOzzD2&key=dffc561732c22651cf13a2ee4f45620137344a21f83167444e033088f26e812fa6307ca51e115edcf9bacf54184fd6b1&ascene=0&uin=Mjc4MjU3MDQw&devicetype=iMac+MacBookPro11%2C2+OSX+OSX+10.10.5+build(14F27)&version=11020201&pass_ticket=kNXrPWwF37WmkcrIR%2FjG2Gj%2BPznLc1gxbd9eWs3zqQgSXUbTHFWZvA7pwPeW36Sp)
 - [关于 Android，用多个 activity](https://www.zhihu.com/question/39662488)
+-[Android项目Tab类型主界面大总结 Fragment+TabPageIndicator+ViewPager](http://blog.csdn.net/lmj623565791/article/details/24740977)
