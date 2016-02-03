@@ -1,7 +1,7 @@
 # Fragment
 
 ============
-### Fragment[各种问题](http://toughcoder.net/blog/2015/04/30/android-fragment-the-bad-parts/)以及解决方法
+### Feagment常见问题以及正确使用姿势
 ============
  1.重影问题
    原因：使用 Fragment 的状态保存，当系统内存不足，Fragment 的宿主 Activity 回收的时候，Fragment 的实例并没有随之被回收。Activity 被系统回收时，会主动调用 onSaveInstance() 方法来保存视图层（View Hierarchy），所以当 Activity 通过导航再次被重建时，之前被实例化过的 Fragment 依然会出现在 Activity 中，此时的 FragmentTransaction 中的相当于又再次 add 了 fragment   进去的，hide()和show()方法对之前保存的fragment已经失效了。综上这些因素导致了多个Fragment重叠在一起。
@@ -17,7 +17,13 @@ Activity 中的 onSaveInstanceState() 里面有一句super.onSaveInstanceState(o
 - 避免错误操作导致Fragment的视图重叠
   视图重叠是因为fragment已经发生了内存泄漏。activity的创建、销毁完全托管到systemserver（ams），而fragment一般是手动new一个对象再add到systemserver，所以这里就有问题了。fragment生命周期开始于add，结束于remove。不管app中间怎么变化，崩溃、进程被回收，只要没有remove，android框架都会自动创建、恢复fragment的状态。
 
-============
+***
+Fragment的使用原理如下：<br/>
+1.获得FragmentTransaction<br/>
+2.使用FragmentTransacion进行add、replace、show、hide...一个fragment<br/>
+3.操作完毕之后，调用FragmentTransaction.commit()方法便可完成操作<br/>
+
+***
 # Fragment的使用
 ## 封装BaseFragment基类
      例如为了实例化View,抽象一个getLayoutId方法，子类无需关心具体的创建操作，父类来做View的创建处理。同时可以提供一个afterCreate抽象函数，在初始化完成之后调用,子类可以做一些初始化的操作，你也可以添加一些常用的方法在基类，例如ShowToast().
@@ -179,6 +185,7 @@ Activity 中的 onSaveInstanceState() 里面有一句super.onSaveInstanceState(o
 - [Android 屏幕旋转 处理 AsyncTask 和 ProgressDialog 的最佳方案](http://blog.csdn.net/lmj623565791/article/details/37936275)
 - [Android 官方推荐 : DialogFragment 创建对话框](http://blog.csdn.net/lmj623565791/article/details/37815413)
 - [ Android Fragment 你应该知道的一切](http://blog.csdn.net/lmj623565791/article/details/42628537#comments)
+- [Android实战技巧：Fragment的那些坑](http://toughcoder.net/blog/2015/04/30/android-fragment-the-bad-parts/)
 - [微信ANDROID客户端-会话速度提升70%的背后](https://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&mid=207548094&idx=1&sn=1a277620bc28349368b68ed98fbefebe&scene=1&srcid=lbTtbXQRHO0soAYOzzD2&key=dffc561732c22651cf13a2ee4f45620137344a21f83167444e033088f26e812fa6307ca51e115edcf9bacf54184fd6b1&ascene=0&uin=Mjc4MjU3MDQw&devicetype=iMac+MacBookPro11%2C2+OSX+OSX+10.10.5+build(14F27)&version=11020201&pass_ticket=kNXrPWwF37WmkcrIR%2FjG2Gj%2BPznLc1gxbd9eWs3zqQgSXUbTHFWZvA7pwPeW36Sp)
 - [关于 Android，用多个 activity](https://www.zhihu.com/question/39662488)
 -[Android项目Tab类型主界面大总结 Fragment+TabPageIndicator+ViewPager](http://blog.csdn.net/lmj623565791/article/details/24740977)
