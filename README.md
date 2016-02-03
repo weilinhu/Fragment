@@ -1,5 +1,5 @@
 # Fragment
-测试Fragment各种方法的Demo
+
 ============
 ### Fragment[各种问题](http://toughcoder.net/blog/2015/04/30/android-fragment-the-bad-parts/)以及解决方法
 ============
