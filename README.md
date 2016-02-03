@@ -19,8 +19,8 @@ Activity 中的 onSaveInstanceState() 里面有一句super.onSaveInstanceState(o
 
 ============
 # Fragment的使用
- ## 封装BaseFragment基类
-    例如为了实例化View,抽象一个getLayoutId方法，子类无需关心具体的创建操作，父类来做View的创建处理。同时可以提供一个afterCreate抽象函数，在初始化完成之后调用,子类可以做一些初始化的操作，你也可以添加一些常用的方法在基类，例如ShowToast().
+## 封装BaseFragment基类
+     例如为了实例化View,抽象一个getLayoutId方法，子类无需关心具体的创建操作，父类来做View的创建处理。同时可以提供一个afterCreate抽象函数，在初始化完成之后调用,子类可以做一些初始化的操作，你也可以添加一些常用的方法在基类，例如ShowToast().
 
      public abstract class BaseFragment extends Fragment {
      protected View mRootView;
@@ -42,8 +42,8 @@ Activity 中的 onSaveInstanceState() 里面有一句super.onSaveInstanceState(o
      
      protected abstract int getLayoutId();
     
-     protected abstract void afterCreate(Bundle savedInstanceState);
-}
+     protected abstract void afterCreate(Bundle savedInstanceState); 
+     }
 
 
 
