@@ -45,12 +45,109 @@ Activity 中的 onSaveInstanceState() 里面有一句super.onSaveInstanceState(o
      protected abstract void afterCreate(Bundle savedInstanceState); 
      }
 
+## 使用静态工厂方法newInstance(...)来获取Fragment实例
+  好处是接收确切的参数，返回一个Fragment实例，避免了在创建Fragment的时候无法在类外部知道所需参数的问题，在合作开发的时候特别有用。还有就是Fragment推荐使用setArguments来传递参数，避免在横竖屏切换的时候Fragment自动调用自己的无参构造函数，导致数据丢失。
+  
 
+    public static Fragment newInstance(String cityName) {
+     Bundle args = new Bundle();
+    args.putString(cityName,"cityName");
+    Fragment fragment = new Fragment();
+    fragment.setArguments(args);
+    return fragment;
+    }
 
+##Fragment状态保存/现场恢复
+为了让你的代码更加清晰和稳定，最好区分清楚fragment状态保存和view状态保存，如果某个属性属于View，则不要在Fragment中做它的状态保存，除非属性属于Fragment。每一个自定义View都有义务实现状态的保存，可以像EditText一样，设置一个开关来选择是否保存比如说：`android:freezeText="true/false"。`
 
+    public class CustomView extends View {
+     
+     ...
+     
+     @Override
+     public Parcelable onSaveInstanceState() {
+         Bundle bundle = new Bundle();
+        // 在这里保存当前状态
+        return bundle;
+    }
+     
+     @Override
+     public void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(state);
+        // 恢复保存的状态
+      }
+     
+     ...
+     
+     }
+ 处理fragment状态保存，例如保存从服务器获取的数据。
 
+    private String serverData;
+      
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("data", serverData);
+    }
+     
+     @Override
+     public void onActivityCreated(Bundle savedInstanceState) {
+         super.onActivityCreated(savedInstanceState);
+        serverData = savedInstanceState.getString("data");
+     }
 
+## 避免错误操作导致Fragment的视图重叠
+在add或者replace的时候，调用含有TAG参数的那个方法，之后再add相同TAG的Fragment的话，之前的会被替换掉，也就不会同时出现多个相同的Fragment了。
 
+    public class WeatherFragment extends Fragment {
+     //TAG
+    public static final String TAG = WeatherFragment.class.getSimpleName();
 
+不过为了最大限度的重用，可以在Activity的onCreate(Bundle savedInstanceState)中判断savedInstanceState是否不为空；不为空的话，先用getSupportFragmentManager(). findFragmentByTag()找一下，找到实例就不用再次创建。
 
+     fragment = null;
+    if(savedInstanceState!=null){
+    fragment = getSupportFragmentManager().findFragmentByTag(Fragment.TAG);
+     }
+     
+     if(fragment == null){
+     fragment = Fragment.newInstance(...);
+     }
+## Fragment里监听虚拟按键和实体按键的返回事件
+      mRootView.setFocusable(true);
+     mRootView.setFocusableInTouchMode(true);
+    mRootView.setOnKeyListener(new View.OnKeyListener() {
+     @Override
+     public boolean onKey(View v, int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //不一定是要触发返回栈，可以做一些其他的事情，我只是举个栗子。
+            getActivity().onBackPressed();
+            return true;
+        }
+        return false;
+    }
+     });
 
+## 使用最大化的DialogFragment来实现浮动层级视图
+
+使用最大化的DialogFragment来显示详情页，此时并不需要提供一个具体的ContainerId即可显示，因为详情页一般情况下在Phone上都是占据满屏幕的，用DialogFragment即可。
+
+## 判断一个页面该使用Fragment还是Activity
+
+如果后一个页面不需要用到前一个页面的太多数据，推荐用Activity展示，否则最好用Fragment（ 当然这也不是绝对的）。
+* * *
+# 封装好的项目
+<br>
+ [FragmentStack](https://github.com/Mr-wangyong/FragmentStack)
+
+====
+# 参考资料
+- [ Android Fragment 真正的完全解析（上）](http://blog.csdn.net/lmj623565791/article/details/37970961)
+- [ Android Fragment 真正的完全解析（下）](http://blog.csdn.net/lmj623565791/article/details/37992017#comments)
+- [Android Fragment完全解析，关于碎片你所需知道的一切](http://blog.csdn.net/guolin_blog/article/details/8881711)
+- [Android Fragment应用实战，使用碎片向ActivityGroup说再见](http://blog.csdn.net/guolin_blog/article/details/13171191)
+- [Android 屏幕旋转 处理 AsyncTask 和 ProgressDialog 的最佳方案](http://blog.csdn.net/lmj623565791/article/details/37936275)
+- [Android 官方推荐 : DialogFragment 创建对话框](http://blog.csdn.net/lmj623565791/article/details/37815413)
+- [ Android Fragment 你应该知道的一切](http://blog.csdn.net/lmj623565791/article/details/42628537#comments)
+- [微信ANDROID客户端-会话速度提升70%的背后](https://mp.weixin.qq.com/s?__biz=MzAwNDY1ODY2OQ==&mid=207548094&idx=1&sn=1a277620bc28349368b68ed98fbefebe&scene=1&srcid=lbTtbXQRHO0soAYOzzD2&key=dffc561732c22651cf13a2ee4f45620137344a21f83167444e033088f26e812fa6307ca51e115edcf9bacf54184fd6b1&ascene=0&uin=Mjc4MjU3MDQw&devicetype=iMac+MacBookPro11%2C2+OSX+OSX+10.10.5+build(14F27)&version=11020201&pass_ticket=kNXrPWwF37WmkcrIR%2FjG2Gj%2BPznLc1gxbd9eWs3zqQgSXUbTHFWZvA7pwPeW36Sp)
+- [关于 Android，用多个 activity](https://www.zhihu.com/question/39662488)
